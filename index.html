@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kəpəz BOKT — Zirvəyə aparan maliyyə həlləri</title>
+  <meta name="description" content="Kəpəz Bank Olmayan Kredit Təşkilatı — girov, lombard, avto kredit və lizinq xidmətləri.">
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  
+  <!-- Fonts: Onest (Architectural Modern Swiss Neo-Grotesque with full Azerbaijani & Cyrillic support) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body class="theme-dark">
+  <!-- Preloader (Pure Monochrome) -->
+  <div id="preloader" class="preloader">
+    <div class="preloader-content">
+      <div class="preloader-logo">
+        <img src="/logo.svg" alt="Kəpəz Logo" class="preloader-svg">
+      </div>
+      <div class="preloader-bar-wrap">
+        <div id="preloader-bar" class="preloader-bar"></div>
+      </div>
+      <div class="preloader-info">
+        <span class="preloader-tag">Yüklənir</span>
+        <span id="preloader-percent" class="preloader-percent">0%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header / Navigation Bar (Creative Apple-Style Symmetrical Expansion & Centered X-Ray Logo) -->
+  <header id="site-header" class="site-header header-mode-xray">
+    <div class="header-inner">
+      
+      <!-- Apple-style expanding background pill (origin: center) -->
+      <div class="header-bg-pill"></div>
+
+      <!-- Dockable Logo: dead-center in X-Ray mode, slides to left when video ends -->
+      <a href="#" class="header-logo-link" aria-label="Kəpəz BOKT Ana Səhifə">
+        <img src="/logo.svg" alt="Kəpəz BOKT" class="header-logo">
+      </a>
+
+      <!-- Kinetic Header Content (Emerges with smoky blur reveal when docked) -->
+      <div class="header-content-wrap">
+        <nav class="header-nav">
+          <a href="#credits" class="nav-link">Kreditlər</a>
+          <a href="#credits" class="nav-link">Lizinq</a>
+          <a href="#cashback" class="nav-link">Güzəştlər</a>
+          <a href="#card" class="nav-link">Fərdi Kart</a>
+          <a href="#contact" class="nav-link">Haqqımızda</a>
+          <a href="#contact" class="nav-link">Əlaqə</a>
+        </nav>
+
+        <div class="header-right-group">
+          
+          <!-- Contact Numbers from kepez-bokt.az -->
+          <div class="header-phones">
+            <a href="tel:+994512357095" class="phone-item" title="Mobil / WhatsApp">
+              <svg class="phone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+              <span>(051) 235 70 95</span>
+            </a>
+            <span class="phone-divider"></span>
+            <a href="tel:+994124368288" class="phone-item" title="Şəhər nömrəsi">
+              <svg class="phone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <span>(012) 436 82 88</span>
+            </a>
+          </div>
+
+          <!-- Language Selector from kepez-bokt.az (AZ | EN | RU) -->
+          <div class="header-lang-selector" id="lang-selector">
+            <button type="button" class="lang-btn active" data-lang="az">AZ</button>
+            <span class="lang-sep">|</span>
+            <button type="button" class="lang-btn" data-lang="en">EN</button>
+            <span class="lang-sep">|</span>
+            <button type="button" class="lang-btn" data-lang="ru">RU</button>
+          </div>
+
+          <!-- CTA Button -->
+          <a href="#card" class="header-cta-btn">
+            <span>Müraciət et</span>
+            <svg class="icon-arrow" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main Scroll Container -->
+  <main id="main-content">
+    
+    <!-- Hero & Canvas Video Scrub Section (Scroll Pinned) -->
+    <section id="hero-scroll-section" class="hero-scroll-section">
+      <div class="canvas-sticky-wrapper">
+        <canvas id="hero-canvas"></canvas>
+        <div class="canvas-gradient-overlay"></div>
+
+        <!-- Initial Hero Overlay (Compact bottom positioning to guarantee zero card overlap on all devices) -->
+        <div id="hero-initial-content" class="hero-initial-content">
+          <div class="hero-bottom-box">
+            <h1 class="hero-title">
+              Zirvəyə aparan maliyyə həlləri
+            </h1>
+            
+            <p class="hero-description">
+              Kəpəz BOKT ilə xəyallarınızı gerçəkləşdirin — sürətli təsdiq, şəffaf şərtlər və etibarlı maliyyə tərəfdaşlığı.
+            </p>
+
+            <div class="hero-scroll-indicator">
+              <div class="scroll-mouse">
+                <div class="scroll-wheel"></div>
+              </div>
+              <span class="scroll-text">Aşağı sürüşdürün</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pure Kinetic Typography Statements (NO background plates, NO borders, Pure Huge Text with Smoke Reveal) -->
+        <div class="kinetic-container">
+          <!-- Bullet 1: Left -->
+          <div class="kinetic-item kinetic-left" id="k-item-1">
+            <h2 class="kinetic-title">100 min və daha artıq kredit</h2>
+          </div>
+
+          <!-- Bullet 2: Right -->
+          <div class="kinetic-item kinetic-right" id="k-item-2">
+            <h2 class="kinetic-title">Ofisə gəlmədən rəsmiləşdirmə</h2>
+          </div>
+
+          <!-- Bullet 3: Left -->
+          <div class="kinetic-item kinetic-left" id="k-item-3">
+            <h2 class="kinetic-title">Dəyərindən 120 faiz daha çox</h2>
+          </div>
+
+          <!-- Bullet 4: Right -->
+          <div class="kinetic-item kinetic-right" id="k-item-4">
+            <h2 class="kinetic-title">1 Gün ərzində qızılın təhvil-təslim</h2>
+          </div>
+
+        </div>
+
+        <!-- Seamless Transition Screen: Fades to milk-white at the end of the video -->
+        <div id="video-end-veil" class="video-end-veil"></div>
+
+        <!-- Final Cloud Slogan: Progressive Multi-Part Cinematic Reveal in Clouds (High Z-Index Over Veil) -->
+        <div class="cloud-slogan-stage" id="k-cloud-stage">
+          <div class="cloud-slogan-part" id="k-slogan-part-1">
+            <h2 class="cloud-slogan-title">
+              Hədəfləriniz nə qədər yüksəkdirsə,
+            </h2>
+          </div>
+          <div class="cloud-slogan-part" id="k-slogan-part-2">
+            <h2 class="cloud-slogan-title">
+              dəstəyimiz bir o qədər güclüdür.
+            </h2>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Post-Video White-Milk Content Area (Brand Blue Accent Unleashed) -->
+    <div id="milk-zone" class="milk-zone">
+
+      <!-- Bento Grid Credits Area (class="home-credits-area") -->
+      <section id="credits" class="section home-credits-area">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Hər ehtiyaca uyğun <span class="text-accent">fərdi kreditlər</span></h2>
+            <p class="section-subtitle">Aşağı faiz dərəcələri, çevik ödəniş qrafiki və gizli komissiyasız şərtlər.</p>
+          </div>
+
+          <div class="bento-grid">
+            
+            <!-- Bento 1: Ev girovu krediti (Large featured card) -->
+            <div class="bento-card bento-card-large" data-tilt>
+              <div class="bento-card-content">
+                <div class="bento-card-header">
+                  <span class="bento-badge">100 000 ₼-dək</span>
+                </div>
+                
+                <h3 class="bento-title">Ev girovu krediti</h3>
+                <p class="bento-desc">Bakı, Sumqayıt və Abşeron ərazisindəki mənzil və daşınmaz əmlak təminatı ilə sərfəli kredit.</p>
+                
+                <ul class="bento-features">
+                  <li><span>✓</span> 100 000 AZN-dək kredit məbləği</li>
+                  <li><span>✓</span> Ofisə gəlmədən operativ sifariş</li>
+                  <li><span>✓</span> Maksimal rahat və fərdi şərtlər</li>
+                </ul>
+
+                <div class="bento-link">
+                  <span>Müraciət et</span>
+                  <div class="bento-arrow">→</div>
+                </div>
+              </div>
+
+              <!-- 3D Floating Visual -->
+              <div class="bento-3d-visual">
+                <img src="/bento/house.webp" alt="Ev girovu" class="bento-3d-img bento-float-1" draggable="false">
+              </div>
+            </div>
+
+            <!-- Bento 2: Lombard kreditləri -->
+            <div class="bento-card" data-tilt>
+              <div class="bento-card-content">
+                <div class="bento-card-header">
+                  <span class="bento-badge blue-badge">Dəyərindən 120%</span>
+                </div>
+
+                <h3 class="bento-title">Lombard kreditləri</h3>
+                <p class="bento-desc">Qızılınız dəyərli olsun! Qızılın bazar qiymətinin maksimum 120%-dək qiymətləndirilməsi.</p>
+
+                <ul class="bento-features">
+                  <li><span>✓</span> 300 AZN – 100 000 AZN məbləğ</li>
+                  <li><span>✓</span> 1 – 36 ay müddət (illik 30% - 32%)</li>
+                  <li><span>✓</span> 1 gün ərzində sürətli təhvil-təslim</li>
+                </ul>
+
+                <div class="bento-link">
+                  <span>Ətraflı məlumat</span>
+                  <div class="bento-arrow">→</div>
+                </div>
+              </div>
+
+              <!-- 3D Floating Visual -->
+              <div class="bento-3d-visual">
+                <img src="/bento/ingot.webp" alt="Lombard kreditləri" class="bento-3d-img bento-float-2" draggable="false">
+              </div>
+            </div>
+
+            <!-- Bento 3: Avto kreditlər -->
+            <div class="bento-card" data-tilt>
+              <div class="bento-card-content">
+                <div class="bento-card-header">
+                  <span class="bento-badge">Aylıq 1.6%-dən</span>
+                </div>
+
+                <h3 class="bento-title">Avto kreditlər</h3>
+                <p class="bento-desc">İstədiyiniz avtomobili seçin, qalanını biz düşünək. Yeni, işlənmiş, hibrid və elektromobillər.</p>
+
+                <ul class="bento-features">
+                  <li><span>✓</span> 3 000 AZN – 50 000 AZN məbləğ</li>
+                  <li><span>✓</span> 36 aya qədər kredit müddəti</li>
+                  <li><span>✓</span> Avtomobil dəyərinin 80%-dək verilməsi</li>
+                </ul>
+
+                <div class="bento-link">
+                  <span>Müraciət et</span>
+                  <div class="bento-arrow">→</div>
+                </div>
+              </div>
+
+              <!-- 3D Floating Visual -->
+              <div class="bento-3d-visual">
+                <img src="/bento/car.webp" alt="Avto kreditlər" class="bento-3d-img bento-float-3" draggable="false">
+              </div>
+            </div>
+
+            <!-- Bento 4: Lizinq -->
+            <div class="bento-card bento-card-wide" data-tilt>
+              <div class="bento-card-content">
+                <div class="bento-card-header">
+                  <span class="bento-badge">70 000 ₼ Limit</span>
+                </div>
+
+                <h3 class="bento-title">Lizinq</h3>
+                <p class="bento-desc">Aqro texnikalar (AKİA subsidiya dəstəyi ilə traktor, kombayn), sənaye avadanlıqları, yük maşınları və kommersiya daşınmaz əmlakı.</p>
+
+                <ul class="bento-features">
+                  <li><span>✓</span> 3 000 AZN – 70 000 AZN məbləğ</li>
+                  <li><span>✓</span> Aylıq 1.6%-dən başlayan sərfəli faiz</li>
+                  <li><span>✓</span> 1 – 36 ay müddət və dövlət subsidiya dəstəyi</li>
+                </ul>
+
+                <div class="bento-link">
+                  <span>Lizinq şərtləri</span>
+                  <div class="bento-arrow">→</div>
+                </div>
+              </div>
+
+              <!-- 3D Floating Visual -->
+              <div class="bento-3d-visual">
+                <img src="/bento/wallet.webp" alt="Lizinq" class="bento-3d-img bento-float-4" draggable="false">
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- Loyalty / 15% Interest Discount Section (Banco Plata Style Feature Banner) -->
+      <section id="cashback" class="section cashback-section">
+        <div class="cashback-container">
+          
+          <!-- Floating 3D Coin Left (Mobile: positioned above 15% text; Desktop: positioned slightly lower) -->
+          <div class="floating-coin-col coin-col-left" id="coin-left">
+            <div class="coin-video-wrapper">
+              <video 
+                class="coin-video" 
+                src="/coin-left.mp4?v=3" 
+                autoplay 
+                loop 
+                muted 
+                playsinline 
+                webkit-playsinline 
+                preload="auto"
+                aria-label="Kəpəz 3D Faiz Güzəşti Koin">
+              </video>
+            </div>
+          </div>
+
+          <!-- Central Content -->
+          <div class="cashback-center-content">
+            <div class="cashback-big-number">15%</div>
+            <h2 class="cashback-heading">
+              Kredit faizlərinə <br>
+              <span class="text-blue-accent">xüsusi güzəşt</span>
+            </h2>
+            <p class="cashback-sub">
+              Kəpəz BOKT-un loyallıq proqramı çərçivəsində, təkrar müraciət edən və ödənişlərini vaxtında icra edən intizamlı müştərilərə illik kredit faiz dərəcələrinə 15%-dək xüsusi güzəşt və endirimlər təqdim olunur.
+            </p>
+            <div class="cashback-cta-wrap">
+              <a href="#card" class="btn btn-brand-blue">
+                <span>Güzəştli Kredit Əldə Et</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Floating 3D Coin Right (Desktop: positioned slightly higher; Mobile: hidden) -->
+          <div class="floating-coin-col coin-col-right" id="coin-right">
+            <div class="coin-video-wrapper">
+              <video 
+                class="coin-video" 
+                src="/coin-right.mp4?v=3" 
+                autoplay 
+                loop 
+                muted 
+                playsinline 
+                webkit-playsinline 
+                preload="auto"
+                aria-label="Kəpəz 3D Faiz Güzəşti Koin">
+              </video>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Realistic Levitating 3D Card Showcase Section (Light Theme, Volumetric Solid Core) -->
+      <section id="card" class="section card-showcase-section">
+        <div class="card-pin-container">
+          
+          <!-- Top Centered Header (Initially hidden with blur, appears after card straightens) -->
+          <div class="card-hero-header" id="card-hero-header">
+            <h2 class="card-hero-title">
+              Kreditinizi rahat və operativ əldə edin:<br>
+              <span class="text-accent">Kəpəz Fərdi Müştəri Kartı</span>
+            </h2>
+          </div>
+
+          <!-- Central 3D Card Stage (Directly visible first in vertical position) -->
+          <div class="card-stage-wrap" id="card-stage-container">
+            <div class="card-levitation-shadow" id="card-shadow"></div>
+
+            <!-- Thick Volumetric 3D Card Rig -->
+            <div class="card-3d-rig" id="card-3d">
+              <div class="card-body">
+                <img src="/card.png" alt="Kəpəz Fərdi Müştəri Kartı" class="card-img" draggable="false">
+                <div class="card-glare" id="card-glare"></div>
+                <div class="card-edge-bevel"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Content (Initially hidden with blur, appears after card straightens) -->
+          <div class="card-hero-footer" id="card-hero-footer">
+            <p class="card-hero-desc">
+              Kəpəz Fərdi Kartı — təsdiq olunmuş kredit məbləğinin nağdsız şəkildə dərhal təhvil verilməsi və təkrar müraciətlərdə növbəsiz, əlavə sənədləşmə olmadan sürətli xidmət üçün təqdim edilən fərdi müştəri kartıdır.
+            </p>
+
+            <!-- 3-Column Luxury Feature Perks Grid -->
+            <div class="card-perks-grid">
+              
+              <div class="card-perk-card">
+                <div class="perk-icon-wrap">
+                  <svg class="perk-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="5" width="20" height="14" rx="2"/>
+                    <line x1="2" y1="10" x2="22" y2="10"/>
+                  </svg>
+                </div>
+                <div class="perk-info">
+                  <h4 class="perk-title">Dərhal Təhvil</h4>
+                  <p class="perk-desc">Kredit məbləği rəsmiləşən kimi karta köçürülür</p>
+                </div>
+              </div>
+
+              <div class="card-perk-card">
+                <div class="perk-info-wrap">
+                  <div class="perk-icon-wrap">
+                    <svg class="perk-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                  </div>
+                </div>
+                <div class="perk-info">
+                  <h4 class="perk-title">Növbəsiz Xidmət</h4>
+                  <p class="perk-desc">Təkrar kreditlərdə sənədsiz operativ təsdiq</p>
+                </div>
+              </div>
+
+              <div class="card-perk-card">
+                <div class="perk-icon-wrap">
+                  <svg class="perk-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                  </svg>
+                </div>
+                <div class="perk-info">
+                  <h4 class="perk-title">Terminallarla Rahat Ödəniş</h4>
+                  <p class="perk-desc">MilliÖN və eManat vasitəsilə 24/7 komissiyasız ödəniş</p>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Single-Line Spacious CTA Button with Arrow Badge -->
+            <div class="card-cta-wrap">
+              <a href="#contact" class="btn-card-primary">
+                <span>Fərdi Müştəri Kartı Əldə Et</span>
+                <span class="btn-arrow-circle">
+                  <svg class="icon-arrow" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                  </svg>
+                </span>
+              </a>
+            </div>
+
+            <p class="card-legal-note">
+              * Fərdi müştəri kartı kredit vəsaitinin təhvili və müştəri identifikasiyası üçündür; pərakəndə alış-veriş və ATM nağdlaşdırması üçün bank ödəniş kartı deyil.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Footer Section -->
+      <footer id="contact" class="site-footer">
+        <div class="container">
+          <div class="footer-top">
+            <div class="footer-brand-col">
+              <img src="/logo.svg" alt="Kəpəz BOKT" class="footer-logo">
+              <p class="footer-brand-desc">
+                «Kəpəz» Bank Olmayan Kredit Təşkilatı MMC Azərbaycan Respublikasının Mərkəzi Bankı tərəfindən verilmiş lisenziya əsasında fəaliyyət göstərir.
+              </p>
+              <div class="footer-license-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <span>AR Mərkəzi Bankı Lisenziyası № BKT-22 (19 Mart 2014)</span>
+              </div>
+
+              <!-- Official Social Channels from kepez-bokt.az -->
+              <div class="footer-socials">
+                <a href="https://www.facebook.com/kepezbokt/" target="_blank" rel="noopener noreferrer" class="social-btn social-facebook" aria-label="Facebook">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                  </svg>
+                </a>
+                <a href="https://www.instagram.com/kepezbokt_mmc/" target="_blank" rel="noopener noreferrer" class="social-btn social-instagram" aria-label="Instagram">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                  </svg>
+                </a>
+                <a href="https://wa.me/994512357095" target="_blank" rel="noopener noreferrer" class="social-btn social-whatsapp" aria-label="WhatsApp">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            <div class="footer-links-col">
+              <h4 class="footer-heading">Kredit Məhsulları</h4>
+              <ul class="footer-nav">
+                <li><a href="#credits">Ev girovu krediti</a></li>
+                <li><a href="#credits">Lombard kreditləri</a></li>
+                <li><a href="#credits">Avto kreditlər</a></li>
+                <li><a href="#credits">Lizinq maliyyələşməsi</a></li>
+                <li><a href="#card">Kəpəz Fərdi Müştəri Kartı</a></li>
+              </ul>
+            </div>
+
+            <div class="footer-links-col">
+              <h4 class="footer-heading">Kəpəz BOKT</h4>
+              <ul class="footer-nav">
+                <li><a href="#about">Haqqımızda</a></li>
+                <li><a href="#contact">Rəhbərlik</a></li>
+                <li><a href="#contact">Maliyyə Hesabatları</a></li>
+                <li><a href="#contact">Sual-Cavab</a></li>
+                <li><a href="#contact">Vakansiyalar</a></li>
+              </ul>
+            </div>
+
+            <div class="footer-links-col">
+              <h4 class="footer-heading">Əlaqə & Dəstək</h4>
+              <ul class="footer-contact-list">
+                <li>
+                  <span class="contact-label">Mobil / WhatsApp:</span>
+                  <a href="tel:+994512357095" class="contact-highlight">(051) 235 70 95</a>
+                </li>
+                <li>
+                  <span class="contact-label">Şəhər Telefonu:</span>
+                  <a href="tel:+994124368288">(012) 436 82 88</a>
+                </li>
+                <li>
+                  <span class="contact-label">E-poçt:</span>
+                  <a href="mailto:info@kepez-bokt.az">info@kepez-bokt.az</a>
+                </li>
+                <li>
+                  <span class="contact-label">Ünvan:</span>
+                  <span>Mirzə Fətəli Axundzadə küç. 177, Bakı, Azərbaycan, AZ1065</span>
+                </li>
+                <li>
+                  <span class="contact-label">İş Rejimi:</span>
+                  <span>Bazar ertəsi – Cümə: 09:00 – 18:00</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="footer-bottom">
+            <p class="copyright">
+              © 2014–2026 «Kəpəz» BOKT MMC. Bütün hüquqlar qorunur.
+            </p>
+            <div class="footer-legal-links">
+              <a href="#">Məxfilik siyasəti</a>
+              <a href="#">İstifadə şərtləri</a>
+              <a href="#">Mərkəzi Bank Reyestri</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+    </div><!-- End Milk Zone -->
+
+  </main>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

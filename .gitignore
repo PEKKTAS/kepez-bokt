@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Production build output
+dist/
+
+# Local test & temporary chrome artifacts
+tmp_*
+test_*
+cashback_render_out.png
+original_frame_*.png
+
+# Raw uncompressed source assets (optimized web assets reside in public/)
+hero_video.mp4
+car.png
+house.png
+ingot.png
+wallet.png
+logo.ai
+/coin-left.mp4
+/coin-right.mp4
+/logo.svg
+
+# System
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
