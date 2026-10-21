@@ -69,13 +69,34 @@
             </a>
           </div>
 
-          <!-- Language Selector from kepez-bokt.az (AZ | EN | RU) -->
-          <div class="header-lang-selector" id="lang-selector">
-            <button type="button" class="lang-btn active" data-lang="az">AZ</button>
-            <span class="lang-sep">|</span>
-            <button type="button" class="lang-btn" data-lang="en">EN</button>
-            <span class="lang-sep">|</span>
-            <button type="button" class="lang-btn" data-lang="ru">RU</button>
+          <!-- Language Selector (AZ | EN | RU with Flag Icons) -->
+          <div class="header-lang-selector" id="lang-selector" role="group" aria-label="Dil seçimi">
+            <button type="button" class="lang-btn active" data-lang="az" title="Azərbaycan dili" aria-label="Azərbaycan dili" aria-pressed="true">
+              <svg class="lang-flag" viewBox="0 0 512 512" aria-hidden="true">
+                <path fill="#3f9c35" d="M0 0h512v512H0z"/>
+                <path fill="#ed2939" d="M0 0h512v341.3H0z"/>
+                <path fill="#00b9e4" d="M0 0h512v170.7H0z"/>
+                <circle cx="238.8" cy="256" r="76.8" fill="#fff"/>
+                <circle cx="255.9" cy="256" r="64" fill="#ed2939"/>
+                <path fill="#fff" d="m324.2 213.3 8.1 23 22-10.5-10.4 22 23 8.2-23 8.2 10.4 22-22-10.5-8.1 23-8.2-23-22 10.5 10.5-22-23-8.2 23-8.2-10.5-22 22 10.5z"/>
+              </svg>
+            </button>
+            <button type="button" class="lang-btn" data-lang="en" title="English" aria-label="English" aria-pressed="false">
+              <svg class="lang-flag" viewBox="0 0 512 512" aria-hidden="true">
+                <path fill="#012169" d="M0 0h512v512H0z"/>
+                <path fill="#FFF" d="M512 0v64L322 256l190 187v69h-67L254 324 68 512H0v-68l186-187L0 74V0h62l192 188L440 0z"/>
+                <path fill="#C8102E" d="m184 324 11 34L42 512H0v-3zm124-12 54 8 150 147v45zM512 0 320 196l-4-44L466 0zM0 1l193 189-59-8L0 49z"/>
+                <path fill="#FFF" d="M176 0v512h160V0zM0 176v160h512V176z"/>
+                <path fill="#C8102E" d="M0 208v96h512v-96zM208 0v512h96V0z"/>
+              </svg>
+            </button>
+            <button type="button" class="lang-btn" data-lang="ru" title="Русский" aria-label="Русский" aria-pressed="false">
+              <svg class="lang-flag" viewBox="0 0 512 512" aria-hidden="true">
+                <path fill="#fff" d="M0 0h512v170.7H0z"/>
+                <path fill="#0039a6" d="M0 170.7h512v170.6H0z"/>
+                <path fill="#d52b1e" d="M0 341.3h512V512H0z"/>
+              </svg>
+            </button>
           </div>
 
           <!-- CTA Button -->

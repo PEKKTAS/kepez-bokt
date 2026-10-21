@@ -386,43 +386,62 @@ button {
   background: #CBD5E1;
 }
 
-/* Language Selector (AZ | EN | RU) */
+/* Language Selector with Modern Circular Flags */
 .header-lang-selector {
   display: flex;
   align-items: center;
-  gap: 5px;
-  padding: 4px 8px;
+  gap: 6px;
+  padding: 3px 6px;
   background: #F8FAFC;
   border-radius: var(--radius-full);
   border: 1px solid #E2E8F0;
 }
 
 .lang-btn {
-  background: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
   border: none;
-  padding: 2px 4px;
-  font-size: 11px;
-  font-weight: 600;
-  color: #64748B;
+  padding: 2px;
   cursor: pointer;
-  border-radius: 4px;
-  transition: all 0.2s ease;
+  border-radius: 50%;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+  line-height: 0;
+  opacity: 0.55;
+  filter: grayscale(20%);
 }
 
 .lang-btn:hover {
-  color: var(--color-brand-blue);
+  opacity: 1;
+  filter: grayscale(0%);
+  transform: scale(1.12);
 }
 
 .lang-btn.active {
-  color: #FFFFFF;
-  background: var(--color-brand-blue);
-  font-weight: 700;
+  opacity: 1;
+  filter: grayscale(0%);
+  transform: scale(1.1);
+  box-shadow: 0 0 0 2px var(--color-brand-blue);
+}
+
+.lang-btn:focus-visible {
+  outline: 2px solid var(--color-brand-blue);
+  outline-offset: 2px;
+}
+
+.lang-flag {
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), inset 0 0 0 0.5px rgba(0, 0, 0, 0.12);
+  display: block;
 }
 
 .lang-sep {
-  font-size: 10px;
-  color: #CBD5E1;
-  user-select: none;
+  display: none;
 }
 
 /* Header CTA Button */
