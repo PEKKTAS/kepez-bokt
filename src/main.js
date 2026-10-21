@@ -69,19 +69,14 @@ function resizeCanvas() {
 
 window.addEventListener('resize', resizeCanvas);
 
-// Render image on canvas with exact cover scaling at native resolution
-function renderCurrentFrame() {
-  const currentImg = images[Math.round(frameProxy.frame)];
-  if (!currentImg || !currentImg.complete) return;
-
-  ctx.imageSmoothingEnabled = true;
-  ctx.imageSmoothingQuality = 'high';
+function drawFrame(img, opacity = 1.0) {
+  if (!img || !img.complete || img.naturalWidth === 0) return;
 
   const cw = canvas.width;
   const ch = canvas.height;
 
-  const imgW = currentImg.naturalWidth || 3840;
-  const imgH = currentImg.naturalHeight || 2160;
+  const imgW = img.naturalWidth || 1920;
+  const imgH = img.naturalHeight || 1080;
 
   const canvasRatio = cw / ch;
   const imgRatio = imgW / imgH;
@@ -100,7 +95,48 @@ function renderCurrentFrame() {
     drawY = 0;
   }
 
-  ctx.drawImage(currentImg, drawX, drawY, drawW, drawH);
+  if (opacity < 1.0) {
+    ctx.globalAlpha = Math.max(0, Math.min(1, opacity));
+  }
+  ctx.drawImage(img, drawX, drawY, drawW, drawH);
+}
+
+// Render image on canvas with exact cover scaling & smooth transition
+function renderCurrentFrame() {
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
+
+  const rawFrame = typeof frameProxy.frame === 'number' && !isNaN(frameProxy.frame) ? frameProxy.frame : 0;
+  const currentFrame = Math.max(0, Math.min(TOTAL_FRAMES - 1, rawFrame));
+
+  // Seamless dissolve from user's custom sharp Frame 1 into the 3D video sequence (frames 0 to 2)
+  if (currentFrame < 2.0) {
+    const floorIndex = Math.floor(currentFrame);
+    const ceilIndex = Math.min(TOTAL_FRAMES - 1, floorIndex + 1);
+    const fraction = currentFrame - floorIndex;
+
+    const baseImg = images[floorIndex];
+    if (baseImg && baseImg.complete) {
+      ctx.globalAlpha = 1.0;
+      drawFrame(baseImg);
+    }
+    if (fraction > 0.01 && floorIndex !== ceilIndex) {
+      const nextImg = images[ceilIndex];
+      if (nextImg && nextImg.complete && nextImg.naturalWidth > 0) {
+        drawFrame(nextImg, fraction);
+      }
+    }
+    ctx.globalAlpha = 1.0;
+    return;
+  }
+
+  // For the rotating 3D video sequence: render razor-sharp integer frame at 30 fps (zero ghosting / double-contours)
+  const frameIndex = Math.round(currentFrame);
+  const currentImg = images[frameIndex];
+  if (!currentImg || !currentImg.complete) return;
+
+  ctx.globalAlpha = 1.0;
+  drawFrame(currentImg);
 }
 
 // Full Frame Preloading (Waits for all 181 frames before opening site)
@@ -170,7 +206,7 @@ function initHeroScrollAnimation() {
       trigger: heroSection,
       start: 'top top',
       end: 'bottom bottom',
-      scrub: 0.6,
+      scrub: 1.0,
       pin: stickyWrapper,
       anticipatePin: 1,
       onUpdate: (self) => {
