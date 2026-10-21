@@ -34,19 +34,23 @@ window.ScrollTrigger = ScrollTrigger;
 window.lenis = lenis;
 
 // ==========================================================================
-// 2. HTML5 Canvas Native 2K Frame Sequencer (2560x1440 Crystal Sharp)
+// 2. HTML5 Canvas Native 2K Frame Sequencer (Fast Progressive Streaming)
 // ==========================================================================
 const TOTAL_FRAMES = 181;
+const CRITICAL_FRAMES_COUNT = 10; // Fast initial buffer to unlock screen immediately
+const FAILSAFE_TIMEOUT_MS = 2500;  // 2.5s maximum wait for network hiccups
+
 const canvas = document.getElementById('hero-canvas');
 const ctx = canvas.getContext('2d', { alpha: false });
 const preloader = document.getElementById('preloader');
 const preloaderBar = document.getElementById('preloader-bar');
 const preloaderPercent = document.getElementById('preloader-percent');
 
-const images = [];
+const images = new Array(TOTAL_FRAMES);
 const frameProxy = { frame: 0 };
 let imagesLoaded = 0;
-let isFirstFrameReady = false;
+let isStarted = false;
+let failsafeTimer = null;
 
 function getFrameUrl(index) {
   const paddedIndex = String(index + 1).padStart(4, '0');
@@ -69,10 +73,30 @@ function resizeCanvas() {
 
 window.addEventListener('resize', resizeCanvas);
 
+// Helper to get nearest loaded frame if current frame is still streaming in background
+function getBestAvailableFrame(index) {
+  const target = Math.min(Math.max(Math.round(index), 0), TOTAL_FRAMES - 1);
+  if (images[target] && images[target].complete && images[target].naturalWidth > 0) {
+    return images[target];
+  }
+  // Search backward and forward for nearest completed frame to prevent blank flicker
+  for (let offset = 1; offset < TOTAL_FRAMES; offset++) {
+    const prev = target - offset;
+    if (prev >= 0 && images[prev] && images[prev].complete && images[prev].naturalWidth > 0) {
+      return images[prev];
+    }
+    const next = target + offset;
+    if (next < TOTAL_FRAMES && images[next] && images[next].complete && images[next].naturalWidth > 0) {
+      return images[next];
+    }
+  }
+  return null;
+}
+
 // Render image on canvas with exact cover scaling at native resolution
 function renderCurrentFrame() {
-  const currentImg = images[Math.round(frameProxy.frame)];
-  if (!currentImg || !currentImg.complete) return;
+  const currentImg = getBestAvailableFrame(frameProxy.frame);
+  if (!currentImg) return;
 
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = 'high';
@@ -103,49 +127,110 @@ function renderCurrentFrame() {
   ctx.drawImage(currentImg, drawX, drawY, drawW, drawH);
 }
 
-// Progressive Frame Preloading
+// Progressive Frame Loading with Priority Queue
+function loadFrame(i) {
+  if (images[i]) return images[i];
+
+  const img = new Image();
+  if (i < CRITICAL_FRAMES_COUNT) {
+    img.fetchPriority = 'high';
+  } else {
+    img.loading = 'lazy';
+  }
+  img.src = getFrameUrl(i);
+
+  img.onload = () => {
+    imagesLoaded++;
+    updateLoadingProgress();
+
+    if (i === 0) {
+      renderCurrentFrame();
+    }
+
+    // Trigger instant launch when critical buffer is loaded
+    if (!isStarted && imagesLoaded >= CRITICAL_FRAMES_COUNT) {
+      launchExperience();
+    }
+  };
+
+  img.onerror = () => {
+    imagesLoaded++;
+    updateLoadingProgress();
+    if (!isStarted && imagesLoaded >= CRITICAL_FRAMES_COUNT) {
+      launchExperience();
+    }
+  };
+
+  images[i] = img;
+  return img;
+}
+
+function updateLoadingProgress() {
+  if (isStarted) return;
+  const percent = Math.min(Math.round((imagesLoaded / CRITICAL_FRAMES_COUNT) * 100), 100);
+  if (preloaderBar) preloaderBar.style.transform = `scaleX(${percent / 100})`;
+  if (preloaderPercent) preloaderPercent.textContent = `${percent}%`;
+}
+
+function launchExperience() {
+  if (isStarted) return;
+  isStarted = true;
+  if (failsafeTimer) clearTimeout(failsafeTimer);
+
+  if (preloaderBar) preloaderBar.style.transform = 'scaleX(1)';
+  if (preloaderPercent) preloaderPercent.textContent = '100%';
+
+  setTimeout(() => {
+    if (preloader) preloader.classList.add('fade-out');
+    renderCurrentFrame();
+    initHeroScrollAnimation();
+    initOtherAnimations();
+
+    // Stream remaining frames progressively in background
+    streamRemainingFrames();
+  }, 200);
+}
+
+// Stream non-critical frames in sequential batches via requestIdleCallback or micro-intervals
+function streamRemainingFrames() {
+  let currentIndex = CRITICAL_FRAMES_COUNT;
+  const BATCH_SIZE = 6;
+
+  function loadNextBatch() {
+    if (currentIndex >= TOTAL_FRAMES) return;
+
+    const end = Math.min(currentIndex + BATCH_SIZE, TOTAL_FRAMES);
+    for (let i = currentIndex; i < end; i++) {
+      loadFrame(i);
+    }
+    currentIndex = end;
+
+    if (currentIndex < TOTAL_FRAMES) {
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(loadNextBatch, { timeout: 250 });
+      } else {
+        setTimeout(loadNextBatch, 50);
+      }
+    }
+  }
+
+  loadNextBatch();
+}
+
 function preloadFrames() {
   resizeCanvas();
 
-  for (let i = 0; i < TOTAL_FRAMES; i++) {
-    const img = new Image();
-    img.src = getFrameUrl(i);
+  // Failsafe timer: guarantee site opens within 2.5s even on slow/broken network
+  failsafeTimer = setTimeout(() => {
+    if (!isStarted) {
+      launchExperience();
+    }
+  }, FAILSAFE_TIMEOUT_MS);
 
-    img.onload = () => {
-      imagesLoaded++;
-      const progress = Math.round((imagesLoaded / TOTAL_FRAMES) * 100);
-
-      if (preloaderBar) preloaderBar.style.width = `${progress}%`;
-      if (preloaderPercent) preloaderPercent.textContent = `${progress}%`;
-
-      // Render the very first frame immediately
-      if (i === 0 && !isFirstFrameReady) {
-        isFirstFrameReady = true;
-        renderCurrentFrame();
-      }
-
-      if (imagesLoaded >= TOTAL_FRAMES) {
-        onFramesLoaded();
-      }
-    };
-
-    img.onerror = () => {
-      imagesLoaded++;
-      if (imagesLoaded >= TOTAL_FRAMES) {
-        onFramesLoaded();
-      }
-    };
-
-    images.push(img);
+  // Load the first critical frames immediately
+  for (let i = 0; i < CRITICAL_FRAMES_COUNT; i++) {
+    loadFrame(i);
   }
-}
-
-function onFramesLoaded() {
-  setTimeout(() => {
-    if (preloader) preloader.classList.add('fade-out');
-    initHeroScrollAnimation();
-    initOtherAnimations();
-  }, 250);
 }
 
 // ==========================================================================
