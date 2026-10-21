@@ -440,14 +440,16 @@ function initLanguageSelector() {
 }
 
 // ==========================================================================
-// 5. Bento Grid Interactive 3D Micro-Tilt
+// 5. Bento Grid Interactive 3D Visual Micro-Tilt (Cards Remain Stable)
 // ==========================================================================
 function initBentoTilt() {
-  const cards = document.querySelectorAll('.bento-card[data-tilt]');
+  const cards = document.querySelectorAll('.bento-card');
 
   cards.forEach((card) => {
-    let bounds;
+    const visual = card.querySelector('.bento-3d-visual');
+    if (!visual) return;
 
+    let bounds;
     function updateBounds() {
       bounds = card.getBoundingClientRect();
     }
@@ -463,49 +465,30 @@ function initBentoTilt() {
       const xPct = (mouseX / bounds.width - 0.5) * 2;
       const yPct = (mouseY / bounds.height - 0.5) * 2;
 
-      const rotateX = -yPct * 6;
-      const rotateY = xPct * 8;
-
-      gsap.to(card, {
-        rotationX: rotateX,
-        rotationY: rotateY,
-        transformPerspective: 1000,
+      // Card plate stays stationary. Only the 3D chrome visual tilts and floats:
+      gsap.to(visual, {
+        x: xPct * 16,
+        y: yPct * 12 - 6,
+        rotationZ: xPct * 3.5,
+        rotationY: xPct * 7,
+        scale: 1.08,
+        duration: 0.35,
         ease: 'power2.out',
-        duration: 0.4,
+        overwrite: 'auto'
       });
-
-      const visual = card.querySelector('.bento-3d-visual');
-      if (visual) {
-        gsap.to(visual, {
-          x: xPct * 16,
-          y: yPct * 12,
-          rotationZ: xPct * 3,
-          duration: 0.45,
-          ease: 'power2.out',
-          overwrite: 'auto'
-        });
-      }
     });
 
     card.addEventListener('mouseleave', () => {
-      gsap.to(card, {
-        rotationX: 0,
+      gsap.to(visual, {
+        x: 0,
+        y: 0,
+        rotationZ: 0,
         rotationY: 0,
+        scale: 1,
+        duration: 0.55,
         ease: 'power3.out',
-        duration: 0.6,
+        overwrite: 'auto'
       });
-
-      const visual = card.querySelector('.bento-3d-visual');
-      if (visual) {
-        gsap.to(visual, {
-          x: 0,
-          y: 0,
-          rotationZ: 0,
-          duration: 0.65,
-          ease: 'power3.out',
-          overwrite: 'auto'
-        });
-      }
     });
   });
 
@@ -518,8 +501,8 @@ function initBentoTilt() {
     ease: 'power3.out',
     scrollTrigger: {
       trigger: '.bento-grid',
-      start: 'top 80%',
-      toggleActions: 'play none none none'
+      start: 'top 85%',
+      once: true
     }
   });
 }
@@ -633,134 +616,78 @@ function initCashbackSection() {
 }
 
 // ==========================================================================
-// 8. 3D Card Scroll Choreography (Vertical Unfold -> Level -> Kinetic Text Reveal)
+// 8. 3D Card Scroll Choreography (Horizontal 360 Spin on Scroll + Mouse Physics)
 // ==========================================================================
 function initCardShowcase3D() {
   const stage = document.getElementById('card-stage-container');
-  const card = document.getElementById('card-3d');
+  const cardRig = document.getElementById('card-3d');
+  const flipper = document.getElementById('card-flipper');
   const shadow = document.getElementById('card-shadow');
   const glare = document.getElementById('card-glare');
-  const header = document.getElementById('card-hero-header');
-  const footer = document.getElementById('card-hero-footer');
-  const perkCards = document.querySelectorAll('.card-perk-card');
+  const glareBack = document.getElementById('card-glare-back');
 
-  if (!card) return;
+  if (!cardRig || !flipper) return;
 
   // 1. Initial State:
-  // ONLY the vertical card is floating directly under 15% section.
-  // Texts are completely invisible with smoky blur.
-  gsap.set(card, {
-    rotationZ: -90,
-    rotationX: 18,
-    rotationY: -14,
-    scale: 0.94,
-    y: 0,
-    transformPerspective: 1400,
+  // Card starts directly horizontal (no vertical fall). Everything is clean and stable.
+  gsap.set(cardRig, {
+    rotationX: 0,
+    rotationY: 0,
+    rotationZ: 0,
+    scale: 1,
+    transformPerspective: 1600,
+    transformOrigin: 'center center'
+  });
+
+  gsap.set(flipper, {
+    rotationY: 0,
     transformOrigin: 'center center'
   });
 
   if (shadow) {
     gsap.set(shadow, {
-      scaleX: 0.65,
-      opacity: 0.65
-    });
-  }
-
-  if (header) {
-    gsap.set(header, {
-      opacity: 0,
-      y: -35,
-      filter: 'blur(22px)',
-      pointerEvents: 'none'
-    });
-  }
-
-  if (footer) {
-    gsap.set(footer, {
-      opacity: 0,
-      y: 40,
-      filter: 'blur(22px)',
-      pointerEvents: 'none'
-    });
-  }
-
-  if (perkCards.length) {
-    gsap.set(perkCards, {
-      opacity: 0,
-      y: 20
+      scaleX: 1,
+      opacity: 0.75
     });
   }
 
   // 2. ScrollTrigger Pinned Scrub Timeline:
-  // As user scrolls, vertical card unfolds horizontally, then texts smoke-reveal!
+  // As user scrolls through the section, card executes a 360° turn around Y axis.
+  // Showing front (0°), back Card_new.png (180°), and front again (360°).
   const pinTl = gsap.timeline({
     scrollTrigger: {
       trigger: '#card',
       start: 'top top',
-      end: '+=1600',
+      end: '+=1400',
       pin: true,
-      scrub: 0.8,
+      scrub: 1.0,
       anticipatePin: 1
     }
   });
 
-  // Step A (0 -> 1.0s):
-  // Vertical card rotates into a clean, horizontal orientation
-  pinTl.to(card, {
-    rotationZ: 0,
-    rotationX: 0,
-    rotationY: 0,
-    scale: 1,
-    ease: 'power2.inOut',
+  // 360 spin on flipper
+  pinTl.to(flipper, {
+    rotationY: 360,
+    ease: 'power1.inOut',
     duration: 1.0
   }, 0);
 
+  // Dynamic shadow scaling in sync with edge-on rotations at 90° and 270°
   if (shadow) {
     pinTl.to(shadow, {
-      scaleX: 1.0,
-      opacity: 1,
-      ease: 'power2.inOut',
+      keyframes: [
+        { scaleX: 1.0, opacity: 0.75, duration: 0 },
+        { scaleX: 0.18, opacity: 0.35, duration: 0.25, ease: 'power1.in' },
+        { scaleX: 1.0, opacity: 0.75, duration: 0.25, ease: 'power1.out' },
+        { scaleX: 0.18, opacity: 0.35, duration: 0.25, ease: 'power1.in' },
+        { scaleX: 1.0, opacity: 0.75, duration: 0.25, ease: 'power1.out' }
+      ],
       duration: 1.0
     }, 0);
   }
 
-  // Step B (1.05s -> 1.85s):
-  // ONLY AFTER the card is horizontal, texts appear with kinetic blur reveal
-  if (header) {
-    pinTl.to(header, {
-      opacity: 1,
-      y: 0,
-      filter: 'blur(0px)',
-      pointerEvents: 'auto',
-      ease: 'power3.out',
-      duration: 0.75
-    }, 1.05);
-  }
-
-  if (footer) {
-    pinTl.to(footer, {
-      opacity: 1,
-      y: 0,
-      filter: 'blur(0px)',
-      pointerEvents: 'auto',
-      ease: 'power3.out',
-      duration: 0.75
-    }, 1.15);
-  }
-
-  if (perkCards.length) {
-    pinTl.to(perkCards, {
-      opacity: 1,
-      y: 0,
-      stagger: 0.08,
-      ease: 'power2.out',
-      duration: 0.5
-    }, 1.3);
-  }
-
-  // Step C (1.85s -> 2.2s):
-  // Hold composition settled in view for interactive reading and mouse tilt
-  pinTl.to({}, { duration: 0.35 });
+  // Reading hold at the end of the spin
+  pinTl.to({}, { duration: 0.4 });
 
   // 3. Interactive Mouse Physics & Specular Glare Tracking
   if (stage) {
@@ -772,9 +699,6 @@ function initCardShowcase3D() {
     window.addEventListener('resize', updateBounds);
 
     stage.addEventListener('mousemove', (e) => {
-      // Only apply mouse physics if card has rotated into horizontal zone
-      if (pinTl.progress() < 0.8) return;
-
       if (!bounds) updateBounds();
       const mouseX = e.clientX - bounds.left;
       const mouseY = e.clientY - bounds.top;
@@ -782,11 +706,11 @@ function initCardShowcase3D() {
       const xNorm = (mouseX / bounds.width - 0.5) * 2;
       const yNorm = (mouseY / bounds.height - 0.5) * 2;
 
-      const rotX = -yNorm * 10;
-      const rotY = xNorm * 14;
-      const rotZ = xNorm * 1.0;
+      const rotX = -yNorm * 9;
+      const rotY = xNorm * 13;
+      const rotZ = xNorm * 1.2;
 
-      gsap.to(card, {
+      gsap.to(cardRig, {
         rotateX: rotX,
         rotateY: rotY,
         rotateZ: rotZ,
@@ -797,25 +721,23 @@ function initCardShowcase3D() {
 
       if (shadow) {
         gsap.to(shadow, {
-          x: xNorm * 18,
-          y: yNorm * 8,
+          x: xNorm * 16,
+          y: yNorm * 6,
           duration: 0.35,
           ease: 'power2.out',
           overwrite: 'auto'
         });
       }
 
-      if (glare) {
-        const glareX = (xNorm + 1) * 50;
-        const glareY = (yNorm + 1) * 50;
-        glare.style.background = `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255, 255, 255, 0.45) 0%, transparent 60%)`;
-      }
+      const glareX = (xNorm + 1) * 50;
+      const glareY = (yNorm + 1) * 50;
+      const glareStyle = `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255, 255, 255, 0.45) 0%, transparent 60%)`;
+      if (glare) glare.style.background = glareStyle;
+      if (glareBack) glareBack.style.background = glareStyle;
     });
 
     stage.addEventListener('mouseleave', () => {
-      if (pinTl.progress() < 0.8) return;
-
-      gsap.to(card, {
+      gsap.to(cardRig, {
         rotateX: 0,
         rotateY: 0,
         rotateZ: 0,
@@ -834,9 +756,9 @@ function initCardShowcase3D() {
         });
       }
 
-      if (glare) {
-        glare.style.background = `radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.35) 0%, transparent 60%)`;
-      }
+      const defaultGlare = `radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.35) 0%, transparent 60%)`;
+      if (glare) glare.style.background = defaultGlare;
+      if (glareBack) glareBack.style.background = defaultGlare;
     });
   }
 }

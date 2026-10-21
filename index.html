@@ -175,7 +175,7 @@
           <div class="bento-grid">
             
             <!-- Bento 1: Ev girovu krediti (Large featured card) -->
-            <div class="bento-card bento-card-large" data-tilt>
+            <div class="bento-card bento-card-large">
               <div class="bento-card-content">
                 <div class="bento-card-header">
                   <span class="bento-badge">100 000 ₼-dək</span>
@@ -191,7 +191,7 @@
                 </ul>
 
                 <div class="bento-link">
-                  <span>Müraciət et</span>
+                  <span>Daha Ətraflı</span>
                   <div class="bento-arrow">→</div>
                 </div>
               </div>
@@ -203,7 +203,7 @@
             </div>
 
             <!-- Bento 2: Lombard kreditləri -->
-            <div class="bento-card" data-tilt>
+            <div class="bento-card">
               <div class="bento-card-content">
                 <div class="bento-card-header">
                   <span class="bento-badge blue-badge">Dəyərindən 120%</span>
@@ -219,7 +219,7 @@
                 </ul>
 
                 <div class="bento-link">
-                  <span>Ətraflı məlumat</span>
+                  <span>Daha Ətraflı</span>
                   <div class="bento-arrow">→</div>
                 </div>
               </div>
@@ -231,7 +231,7 @@
             </div>
 
             <!-- Bento 3: Avto kreditlər -->
-            <div class="bento-card" data-tilt>
+            <div class="bento-card">
               <div class="bento-card-content">
                 <div class="bento-card-header">
                   <span class="bento-badge">Aylıq 1.6%-dən</span>
@@ -247,7 +247,7 @@
                 </ul>
 
                 <div class="bento-link">
-                  <span>Müraciət et</span>
+                  <span>Daha Ətraflı</span>
                   <div class="bento-arrow">→</div>
                 </div>
               </div>
@@ -259,7 +259,7 @@
             </div>
 
             <!-- Bento 4: Lizinq -->
-            <div class="bento-card bento-card-wide" data-tilt>
+            <div class="bento-card bento-card-wide">
               <div class="bento-card-content">
                 <div class="bento-card-header">
                   <span class="bento-badge">70 000 ₼ Limit</span>
@@ -275,7 +275,7 @@
                 </ul>
 
                 <div class="bento-link">
-                  <span>Lizinq şərtləri</span>
+                  <span>Daha Ətraflı</span>
                   <div class="bento-arrow">→</div>
                 </div>
               </div>
@@ -315,15 +315,15 @@
           <div class="cashback-center-content">
             <div class="cashback-big-number">15%</div>
             <h2 class="cashback-heading">
-              Kredit faizlərinə <br>
+              Depozit faizlərinə <br>
               <span class="text-blue-accent">xüsusi güzəşt</span>
             </h2>
             <p class="cashback-sub">
-              Kəpəz BOKT-un loyallıq proqramı çərçivəsində, təkrar müraciət edən və ödənişlərini vaxtında icra edən intizamlı müştərilərə illik kredit faiz dərəcələrinə 15%-dək xüsusi güzəşt və endirimlər təqdim olunur.
+              Kəpəz BOKT-un sərfəli depozit şərtləri ilə vəsaitlərinizi etibarlı şəkildə artırın və illik 15%-dək yüksək gəlir əldə edin.
             </p>
             <div class="cashback-cta-wrap">
-              <a href="#card" class="btn btn-brand-blue">
-                <span>Güzəştli Kredit Əldə Et</span>
+              <a href="#contact" class="btn btn-brand-blue">
+                <span>Depozit Yerləşdir</span>
               </a>
             </div>
           </div>
@@ -360,70 +360,35 @@
             </h2>
           </div>
 
-          <!-- Central 3D Card Stage (Directly visible first in vertical position) -->
+          <!-- Central 3D Card Stage (Directly horizontal, rotates 360 on scroll) -->
           <div class="card-stage-wrap" id="card-stage-container">
             <div class="card-levitation-shadow" id="card-shadow"></div>
 
-            <!-- Thick Volumetric 3D Card Rig -->
+            <!-- Thick Volumetric Double-Sided 3D Card Rig -->
             <div class="card-3d-rig" id="card-3d">
-              <div class="card-body">
-                <img src="/card.png" alt="Kəpəz Fərdi Müştəri Kartı" class="card-img" draggable="false">
-                <div class="card-glare" id="card-glare"></div>
-                <div class="card-edge-bevel"></div>
+              <div class="card-flipper" id="card-flipper">
+                <!-- Front Face (Dark Blue Metallic with Gold Mountain) -->
+                <div class="card-face card-face-front">
+                  <img src="/card.png" alt="Kəpəz Fərdi Müştəri Kartı Ön Tərəf" class="card-img" draggable="false">
+                  <div class="card-glare" id="card-glare"></div>
+                  <div class="card-edge-bevel"></div>
+                </div>
+
+                <!-- Back Face (Card_new.png) -->
+                <div class="card-face card-face-back">
+                  <img src="/card-back.png" alt="Kəpəz Fərdi Müştəri Kartı Arxa Tərəf" class="card-img" draggable="false">
+                  <div class="card-glare" id="card-glare-back"></div>
+                  <div class="card-edge-bevel"></div>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- Bottom Content (Initially hidden with blur, appears after card straightens) -->
+          <!-- Bottom Content -->
           <div class="card-hero-footer" id="card-hero-footer">
             <p class="card-hero-desc">
               Kəpəz Fərdi Kartı — təsdiq olunmuş kredit məbləğinin nağdsız şəkildə dərhal təhvil verilməsi və təkrar müraciətlərdə növbəsiz, əlavə sənədləşmə olmadan sürətli xidmət üçün təqdim edilən fərdi müştəri kartıdır.
             </p>
-
-            <!-- 3-Column Luxury Feature Perks Grid -->
-            <div class="card-perks-grid">
-              
-              <div class="card-perk-card">
-                <div class="perk-icon-wrap">
-                  <svg class="perk-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="2" y="5" width="20" height="14" rx="2"/>
-                    <line x1="2" y1="10" x2="22" y2="10"/>
-                  </svg>
-                </div>
-                <div class="perk-info">
-                  <h4 class="perk-title">Dərhal Təhvil</h4>
-                  <p class="perk-desc">Kredit məbləği rəsmiləşən kimi karta köçürülür</p>
-                </div>
-              </div>
-
-              <div class="card-perk-card">
-                <div class="perk-info-wrap">
-                  <div class="perk-icon-wrap">
-                    <svg class="perk-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                    </svg>
-                  </div>
-                </div>
-                <div class="perk-info">
-                  <h4 class="perk-title">Növbəsiz Xidmət</h4>
-                  <p class="perk-desc">Təkrar kreditlərdə sənədsiz operativ təsdiq</p>
-                </div>
-              </div>
-
-              <div class="card-perk-card">
-                <div class="perk-icon-wrap">
-                  <svg class="perk-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="10"/>
-                    <polyline points="12 6 12 12 16 14"/>
-                  </svg>
-                </div>
-                <div class="perk-info">
-                  <h4 class="perk-title">Terminallarla Rahat Ödəniş</h4>
-                  <p class="perk-desc">MilliÖN və eManat vasitəsilə 24/7 komissiyasız ödəniş</p>
-                </div>
-              </div>
-
-            </div>
 
             <!-- Single-Line Spacious CTA Button with Arrow Badge -->
             <div class="card-cta-wrap">

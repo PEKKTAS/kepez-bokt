@@ -247,10 +247,10 @@ button {
 }
 
 /* --------------------------------------------------------------------------
-   State 1: Video Scrolling Mode (Pure Centered X-Ray Logo with bydelign.com Inversion)
+   State 1: Video Scrolling Mode (Pure Centered Solid White Logo - No X-Ray)
    -------------------------------------------------------------------------- */
 .site-header.header-mode-xray {
-  mix-blend-mode: difference;
+  mix-blend-mode: normal;
 }
 
 .site-header.header-mode-xray .header-bg-pill {
@@ -268,8 +268,8 @@ button {
 }
 
 .site-header.header-mode-xray .header-logo {
-  /* Pure white graphic for dynamic pixel-by-pixel backdrop inversion */
-  filter: brightness(0) invert(1);
+  /* Solid pure white logo */
+  filter: brightness(0) invert(1) drop-shadow(0 2px 10px rgba(0, 0, 0, 0.35));
   mix-blend-mode: normal;
 }
 
@@ -796,9 +796,9 @@ button {
 }
 
 .bento-card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-lg);
-  border-color: rgba(0, 102, 179, 0.25);
+  transform: none;
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-subtle-light);
 }
 
 /* Bento Sizing: Symmetrical 2-Column Grid so Ev girovu & Lombard are on the exact same line */
@@ -824,14 +824,14 @@ button {
   display: flex;
   flex-direction: column;
   height: 100%;
-  max-width: 58%;
+  max-width: 65%;
 }
 
 .bento-card-large .bento-card-content,
 .bento-card-wide .bento-card-content,
 .bento-card:nth-child(2) .bento-card-content,
 .bento-card:nth-child(3) .bento-card-content {
-  max-width: 58%;
+  max-width: 65%;
 }
 
 .bento-card-header {
@@ -938,10 +938,10 @@ button {
 .bento-card:nth-child(2) .bento-3d-visual,
 .bento-card:nth-child(3) .bento-3d-visual,
 .bento-card-wide .bento-3d-visual {
-  width: 240px;
-  height: 240px;
-  right: 18px;
-  bottom: 16px;
+  width: 185px;
+  height: 185px;
+  right: 22px;
+  bottom: 20px;
 }
 
 .bento-3d-img {
@@ -950,15 +950,15 @@ button {
   object-fit: contain;
   filter: drop-shadow(0 16px 28px rgba(0, 20, 50, 0.12));
   will-change: transform;
-  transition: filter 0.5s ease;
+  transition: filter 0.5s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .bento-card:hover .bento-3d-img {
-  filter: drop-shadow(0 26px 42px rgba(0, 20, 50, 0.2));
+  filter: drop-shadow(0 22px 36px rgba(0, 102, 179, 0.22));
 }
 
 .bento-card:hover .bento-3d-visual {
-  transform: scale(1.08) translateY(-8px);
+  transform: scale(1.08) translateY(-6px);
 }
 
 /* Looped Organic 3D Levitation Animations */
@@ -1056,7 +1056,7 @@ button {
 .cashback-big-number {
   font-family: var(--font-display);
   font-size: clamp(6rem, 12vw, 10.5rem);
-  font-weight: 900;
+  font-weight: 800; /* Matching heading thickness */
   line-height: 0.9;
   letter-spacing: 0.02em; /* Added generous kerning */
   color: #0A1424;
@@ -1242,14 +1242,15 @@ button {
   margin: 6px 0;
 }
 
-/* 3. Volumetric 3D Card Rig */
+/* 3. Volumetric Double-Sided 3D Card Rig */
 .card-3d-rig {
-  width: 430px;
+  width: 440px;
   max-width: 88vw;
-  aspect-ratio: 1.586;
+  aspect-ratio: 1.545;
   position: relative;
-  transform-style: preserve-3d;
+  perspective: 1600px;
   cursor: grab;
+  transform-style: preserve-3d;
   will-change: transform;
 }
 
@@ -1257,14 +1258,24 @@ button {
   cursor: grabbing;
 }
 
-/* Monolithic Card Body (Solid titanium edge, perfect rounded geometry, no displaced layers) */
-.card-body {
+.card-flipper {
   position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.card-face {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   border-radius: 20px;
   overflow: hidden;
-  /* Multi-level physical edge bevel and ambient depth */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.18) inset,
     0 1px 0 1px rgba(255, 255, 255, 0.35) inset,
@@ -1274,7 +1285,14 @@ button {
     0 4px 1px 0 rgba(0, 0, 0, 0.4),
     0 18px 40px -6px rgba(0, 20, 50, 0.22),
     0 36px 72px -12px rgba(0, 20, 50, 0.16);
-  transform: translateZ(0);
+}
+
+.card-face-front {
+  transform: rotateY(0deg) translateZ(1px);
+}
+
+.card-face-back {
+  transform: rotateY(180deg) translateZ(1px);
 }
 
 .card-img {
@@ -1332,89 +1350,19 @@ button {
 .card-hero-footer {
   max-width: 880px;
   width: 100%;
-  margin: 6px auto 0 auto;
+  margin: 10px auto 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  will-change: transform, opacity, filter;
 }
 
 .card-hero-desc {
   font-size: 14px;
   line-height: 1.5;
   color: #475569;
-  margin-bottom: 16px;
+  margin-bottom: 22px;
   max-width: 620px;
-}
-
-/* 5. Luxury 3-Column Feature Perks Grid */
-.card-perks-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-  width: 100%;
-  max-width: 840px;
-  margin-bottom: 18px;
-}
-
-.card-perk-card {
-  background: #F8FAFC;
-  border: 1px solid #E2E8F0;
-  border-radius: 14px;
-  padding: 12px 14px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  text-align: left;
-  transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-}
-
-.card-perk-card:hover {
-  background: #FFFFFF;
-  border-color: rgba(0, 102, 179, 0.28);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-}
-
-.perk-icon-wrap {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  background: rgba(0, 102, 179, 0.08);
-  color: var(--color-brand-blue);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.perk-svg {
-  width: 20px;
-  height: 20px;
-}
-
-.perk-info {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.perk-title {
-  font-family: var(--font-display);
-  font-size: 13px;
-  font-weight: 700;
-  color: #0A1424;
-  margin: 0;
-  letter-spacing: 0.015em;
-}
-
-.perk-desc {
-  font-size: 12px;
-  color: #64748B;
-  margin: 0;
-  line-height: 1.4;
-  letter-spacing: 0.005em;
 }
 
 /* 6. Spacious Pill CTA Button with Arrow Badge */
@@ -1838,12 +1786,6 @@ button {
   }
 
   /* Card Section Responsive */
-  .card-perks-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-    max-width: 440px;
-  }
-
   .card-stage-wrap {
     height: 300px;
     margin: 6px 0;
