@@ -268,8 +268,8 @@ button {
 }
 
 .site-header.header-mode-xray .header-logo {
-  /* Solid pure white logo */
-  filter: brightness(0) invert(1) drop-shadow(0 2px 10px rgba(0, 0, 0, 0.35));
+  /* Solid pure white logo with zero drop-shadow */
+  filter: brightness(0) invert(1);
   mix-blend-mode: normal;
 }
 
@@ -532,7 +532,7 @@ button {
   line-height: 1.15;
   letter-spacing: 0.02em; /* Positive kerning to prevent clumping */
   margin-bottom: 6px;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.75);
+  text-shadow: none; /* Zero shadows/glows */
   color: #FFFFFF;
 }
 
@@ -544,7 +544,7 @@ button {
   color: rgba(255, 255, 255, 0.85);
   letter-spacing: 0.01em;
   margin-bottom: 12px;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  text-shadow: none; /* Zero shadows/glows */
 }
 
 .btn {
@@ -562,17 +562,17 @@ button {
   cursor: pointer;
 }
 
-/* Pure Monochrome Buttons for Hero */
+/* Pure Monochrome Buttons for Hero (No Glow / No Shadow) */
 .btn-monochrome-solid {
   background: #FFFFFF;
   color: #070D18;
-  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.25);
+  box-shadow: none;
 }
 
 .btn-monochrome-solid:hover {
   background: #E2E8F0;
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.35);
+  box-shadow: none;
 }
 
 .btn-monochrome-glass {
@@ -685,7 +685,7 @@ button {
   line-height: 1.1;
   letter-spacing: 0.02em; /* Added generous positive kerning */
   color: #FFFFFF;
-  text-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+  text-shadow: none; /* Zero shadow */
   background: none;
   border: none;
 }
@@ -763,7 +763,7 @@ button {
   letter-spacing: 0.025em; /* Crisp, expansive luxury kerning */
   color: #070D18;
   text-align: center;
-  text-shadow: 0 4px 30px rgba(255, 255, 255, 0.85);
+  text-shadow: none; /* Zero glow/shadow */
 }
 
 /* ==========================================================================
@@ -784,13 +784,13 @@ button {
   border-radius: var(--radius-xl);
   border: 1px solid var(--border-subtle-light);
   box-shadow: var(--shadow-md);
-  padding: 36px;
+  padding: 36px 34px;
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 360px;
+  min-height: 280px;
   transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s var(--ease-out-expo), border-color 0.4s ease;
   cursor: pointer;
 }
@@ -824,21 +824,21 @@ button {
   display: flex;
   flex-direction: column;
   height: 100%;
-  max-width: 65%;
+  max-width: 62%;
 }
 
 .bento-card-large .bento-card-content,
 .bento-card-wide .bento-card-content,
 .bento-card:nth-child(2) .bento-card-content,
 .bento-card:nth-child(3) .bento-card-content {
-  max-width: 65%;
+  max-width: 62%;
 }
 
 .bento-card-header {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .bento-badge {
@@ -861,34 +861,14 @@ button {
   font-weight: 700;
   letter-spacing: 0.015em; /* Added generous kerning */
   color: var(--color-navy-deep);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .bento-desc {
   font-size: 15px;
-  line-height: 1.6;
+  line-height: 1.55;
   color: var(--color-text-muted);
-  margin-bottom: 20px;
-}
-
-.bento-features {
   margin-bottom: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.bento-features li {
-  font-size: 14px;
-  color: #334155;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.bento-features span {
-  color: var(--color-brand-blue);
-  font-weight: 700;
 }
 
 .bento-link {
@@ -1055,20 +1035,20 @@ button {
 
 .cashback-big-number {
   font-family: var(--font-display);
-  font-size: clamp(6rem, 12vw, 10.5rem);
-  font-weight: 800; /* Matching heading thickness */
-  line-height: 0.9;
-  letter-spacing: 0.02em; /* Added generous kerning */
+  font-size: clamp(5.2rem, 9.5vw, 7.6rem);
+  font-weight: 500; /* Optically matches visual stroke thickness of Depozit (weight 800 at smaller size) */
+  line-height: 0.95;
+  letter-spacing: 0.01em;
   color: #0A1424;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .cashback-heading {
   font-family: var(--font-display);
-  font-size: clamp(2.2rem, 4.2vw, 3.6rem);
+  font-size: clamp(2.4rem, 4.4vw, 3.6rem);
   font-weight: 800;
-  line-height: 1.12;
-  letter-spacing: 0.015em; /* Added generous kerning */
+  line-height: 1.1;
+  letter-spacing: 0.015em;
   color: #0A1424;
   margin-bottom: 20px;
 }
