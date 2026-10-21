@@ -127,109 +127,64 @@ function renderCurrentFrame() {
   ctx.drawImage(currentImg, drawX, drawY, drawW, drawH);
 }
 
-// Progressive Frame Loading with Priority Queue
-function loadFrame(i) {
-  if (images[i]) return images[i];
-
-  const img = new Image();
-  if (i < CRITICAL_FRAMES_COUNT) {
-    img.fetchPriority = 'high';
-  } else {
-    img.loading = 'lazy';
-  }
-  img.src = getFrameUrl(i);
-
-  img.onload = () => {
-    imagesLoaded++;
-    updateLoadingProgress();
-
-    if (i === 0) {
-      renderCurrentFrame();
-    }
-
-    // Trigger instant launch when critical buffer is loaded
-    if (!isStarted && imagesLoaded >= CRITICAL_FRAMES_COUNT) {
-      launchExperience();
-    }
-  };
-
-  img.onerror = () => {
-    imagesLoaded++;
-    updateLoadingProgress();
-    if (!isStarted && imagesLoaded >= CRITICAL_FRAMES_COUNT) {
-      launchExperience();
-    }
-  };
-
-  images[i] = img;
-  return img;
-}
-
-function updateLoadingProgress() {
-  if (isStarted) return;
-  const percent = Math.min(Math.round((imagesLoaded / CRITICAL_FRAMES_COUNT) * 100), 100);
-  if (preloaderBar) preloaderBar.style.transform = `scaleX(${percent / 100})`;
-  if (preloaderPercent) preloaderPercent.textContent = `${percent}%`;
-}
-
-function launchExperience() {
-  if (isStarted) return;
-  isStarted = true;
-  if (failsafeTimer) clearTimeout(failsafeTimer);
-
-  if (preloaderBar) preloaderBar.style.transform = 'scaleX(1)';
-  if (preloaderPercent) preloaderPercent.textContent = '100%';
-
-  setTimeout(() => {
-    if (preloader) preloader.classList.add('fade-out');
-    renderCurrentFrame();
-    initHeroScrollAnimation();
-    initOtherAnimations();
-
-    // Stream remaining frames progressively in background
-    streamRemainingFrames();
-  }, 200);
-}
-
-// Stream non-critical frames in sequential batches via requestIdleCallback or micro-intervals
-function streamRemainingFrames() {
-  let currentIndex = CRITICAL_FRAMES_COUNT;
-  const BATCH_SIZE = 6;
-
-  function loadNextBatch() {
-    if (currentIndex >= TOTAL_FRAMES) return;
-
-    const end = Math.min(currentIndex + BATCH_SIZE, TOTAL_FRAMES);
-    for (let i = currentIndex; i < end; i++) {
-      loadFrame(i);
-    }
-    currentIndex = end;
-
-    if (currentIndex < TOTAL_FRAMES) {
-      if ('requestIdleCallback' in window) {
-        window.requestIdleCallback(loadNextBatch, { timeout: 250 });
-      } else {
-        setTimeout(loadNextBatch, 50);
-      }
-    }
-  }
-
-  loadNextBatch();
-}
-
+// Progressive Frame Loading
 function preloadFrames() {
   resizeCanvas();
 
-  // Failsafe timer: guarantee site opens within 2.5s even on slow/broken network
-  failsafeTimer = setTimeout(() => {
-    if (!isStarted) {
-      launchExperience();
-    }
-  }, FAILSAFE_TIMEOUT_MS);
+  let isLaunched = false;
+  const CRITICAL_FRAMES_COUNT = 12;
 
-  // Load the first critical frames immediately
-  for (let i = 0; i < CRITICAL_FRAMES_COUNT; i++) {
-    loadFrame(i);
+  const launch = () => {
+    if (isLaunched) return;
+    isLaunched = true;
+    if (failsafeTimer) clearTimeout(failsafeTimer);
+
+    if (preloaderBar) preloaderBar.style.transform = 'scaleX(1)';
+    if (preloaderPercent) preloaderPercent.textContent = '100%';
+
+    setTimeout(() => {
+      if (preloader) preloader.classList.add('fade-out');
+      renderCurrentFrame();
+      initHeroScrollAnimation();
+      initOtherAnimations();
+    }, 200);
+  };
+
+  // Fail-safe timer (guarantee site opens within 2 seconds even on slow connections)
+  failsafeTimer = setTimeout(() => {
+    launch();
+  }, 2000);
+
+  // Load all 181 frames in parallel
+  for (let i = 0; i < TOTAL_FRAMES; i++) {
+    const img = new Image();
+    img.src = getFrameUrl(i);
+
+    img.onload = () => {
+      imagesLoaded++;
+      const percent = Math.min(Math.round((imagesLoaded / CRITICAL_FRAMES_COUNT) * 100), 100);
+      if (!isLaunched) {
+        if (preloaderBar) preloaderBar.style.transform = `scaleX(${percent / 100})`;
+        if (preloaderPercent) preloaderPercent.textContent = `${percent}%`;
+      }
+
+      if (i === 0) {
+        renderCurrentFrame();
+      }
+
+      if (imagesLoaded >= CRITICAL_FRAMES_COUNT) {
+        launch();
+      }
+    };
+
+    img.onerror = () => {
+      imagesLoaded++;
+      if (imagesLoaded >= CRITICAL_FRAMES_COUNT) {
+        launch();
+      }
+    };
+
+    images[i] = img;
   }
 }
 
@@ -907,7 +862,9 @@ function initOtherAnimations() {
   initCardShowcase3D();
 }
 
-// Kick off frame preloader on DOM load
-window.addEventListener('DOMContentLoaded', () => {
+// Kick off frame preloader on DOM load or immediately if already ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', preloadFrames);
+} else {
   preloadFrames();
-});
+}
