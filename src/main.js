@@ -625,11 +625,14 @@ function initCardShowcase3D() {
   const shadow = document.getElementById('card-shadow');
   const glare = document.getElementById('card-glare');
   const glareBack = document.getElementById('card-glare-back');
+  const header = document.getElementById('card-hero-header');
+  const footer = document.getElementById('card-hero-footer');
 
   if (!cardRig || !flipper) return;
 
   // 1. Initial State:
-  // Card starts directly horizontal (no vertical fall). Everything is clean and stable.
+  // Card starts directly horizontal (no vertical fall).
+  // Text blocks start hidden, to be gracefully revealed on scroll during the 360 rotation.
   gsap.set(cardRig, {
     rotationX: 0,
     rotationY: 0,
@@ -651,9 +654,28 @@ function initCardShowcase3D() {
     });
   }
 
+  if (header) {
+    gsap.set(header, {
+      opacity: 0,
+      y: -26,
+      filter: 'blur(12px)',
+      pointerEvents: 'none'
+    });
+  }
+
+  if (footer) {
+    gsap.set(footer, {
+      opacity: 0,
+      y: 26,
+      filter: 'blur(12px)',
+      pointerEvents: 'none'
+    });
+  }
+
   // 2. ScrollTrigger Pinned Scrub Timeline:
-  // As user scrolls through the section, card executes a 360° turn around Y axis.
-  // Showing front (0°), back Card_new.png (180°), and front again (360°).
+  // As user scrolls through the section, card executes a 360° turn in the REVERSED direction (0 -> -360°).
+  // Showing front (0°), back Card_new.png (-180°), and front again (-360°).
+  // Simultaneously, text blocks emerge and finish their reveal right as the full 360 rotation completes!
   const pinTl = gsap.timeline({
     scrollTrigger: {
       trigger: '#card',
@@ -665,14 +687,14 @@ function initCardShowcase3D() {
     }
   });
 
-  // 360 spin on flipper
+  // 360 spin on flipper - REVERSED DIRECTION (-360)
   pinTl.to(flipper, {
-    rotationY: 360,
+    rotationY: -360,
     ease: 'power1.inOut',
     duration: 1.0
   }, 0);
 
-  // Dynamic shadow scaling in sync with edge-on rotations at 90° and 270°
+  // Dynamic shadow scaling in sync with edge-on rotations at -90° and -270°
   if (shadow) {
     pinTl.to(shadow, {
       keyframes: [
@@ -686,8 +708,31 @@ function initCardShowcase3D() {
     }, 0);
   }
 
-  // Reading hold at the end of the spin
-  pinTl.to({}, { duration: 0.4 });
+  // Text blocks emerge smoothly along with the scroll spin, fully revealed at 1.0
+  if (header) {
+    pinTl.to(header, {
+      opacity: 1,
+      y: 0,
+      filter: 'blur(0px)',
+      pointerEvents: 'auto',
+      ease: 'power2.out',
+      duration: 0.75
+    }, 0.25);
+  }
+
+  if (footer) {
+    pinTl.to(footer, {
+      opacity: 1,
+      y: 0,
+      filter: 'blur(0px)',
+      pointerEvents: 'auto',
+      ease: 'power2.out',
+      duration: 0.75
+    }, 0.25);
+  }
+
+  // Reading hold at the end of the full spin and text reveal
+  pinTl.to({}, { duration: 0.45 });
 
   // 3. Interactive Mouse Physics & Specular Glare Tracking
   if (stage) {
